@@ -55,7 +55,7 @@ variable "github_repo_url" {
   description = "URL of the GitHub repository to clone"
   type        = string
   sensitive   = true
-  default = ""
+  default     = ""
 }
 variable "backend_github_repo" {
   description = "The GitHub repository for the backend application"
@@ -70,11 +70,11 @@ variable "frontend_github_repo" {
 variable "github_token_for_datadog" {
   description = "token for datadog to run CICD"
   sensitive   = true
-  default = ""
+  default     = ""
 }
 variable "github_repo_for_datadog" {
   description = "url of the github repo containing terraform files"
-  default = ""
+  default     = ""
 }
 
 variable "domain" {
@@ -102,18 +102,20 @@ variable "datadog_app_key" {
 variable "customer_id" {
   description = "id of customer"
   type        = string
-  default = "0000"
+  default     = "0000"
 }
 variable "asset_name" {
   description = "name of asset being monitored"
   type        = string
+  default     = ""
 }
 variable "asset_lbnref" {
   description = "linkbynet internal id for asset"
   type        = string
+  default     = ""
 }
 variable "customer_name" {
   description = "name of customer"
   type        = string
-  default = "tho-nguyen"
+  default     = "tho-nguyen"
 }
