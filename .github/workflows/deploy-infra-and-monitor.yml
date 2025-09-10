@@ -14,10 +14,12 @@ jobs:
       # Sensitive
       DATADOG_API_KEY: ${{ secrets.DATADOG_API_KEY }}
       DATADOG_APP_KEY: ${{ secrets.DATADOG_APP_KEY }}
+      TF_VAR_datadog_api_key: ${{ secrets.DATADOG_API_KEY }}
+      TF_VAR_datadog_app_key: ${{ secrets.DATADOG_APP_KEY }}
       TF_VAR_cloudflare_token: ${{ secrets.CLOUDFLARE_TOKEN}}
       TF_VAR_cloudflare_zone_id: ${{ secrets.CLOUDFLARE_ZONE_ID}}
       TF_VAR_db_user_password_v1: ${{ secrets.DB_USER_PASSWORD_V1}}
-      TF_VAR_credential_file: ${{ secrets.GCP_SA_KEY}}
+      TF_VAR_credentials_file: ${{ secrets.GCP_SA_KEY}}
       # Non-sensitive
       TF_VAR_environment: ${{vars.ENVIRONMENT}} 
       TF_VAR_project_id: ${{vars.PROJECT_ID}}
