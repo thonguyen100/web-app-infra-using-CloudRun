@@ -1,0 +1,26 @@
+include:
+  - project: 'monitoring/automation/templates'
+    ref: master
+    file: "danger/ci-danger-semantic.yml"
+  - project: 'monitoring/automation/templates'
+    ref: master
+    file: "terraform/terradeploy-ci.yml"
+  - project: 'monitoring/automation/templates'
+    ref: master
+    file: "terraform/terradoc-ci.yml"
+  - project: 'monitoring/automation/templates'
+    ref: master
+    file: 'versioning/release-ci.yml'
+  - project: 'monitoring/automation/templates'
+    ref: master
+    file: 'notification/notify-ci.yml'
+
+stages:
+  - checker
+  - validate
+  - plan
+  - apply
+  - destroy
+  - release
+  - documentation
+  - notify

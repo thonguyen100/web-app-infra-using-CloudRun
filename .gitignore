@@ -1,0 +1,29 @@
+*.backup
+*.terraform
+*.sh
+/modules/bigquery
+/modules/compute
+
+diagram-file-infra-with-cloudrun.drawio
+project-workflows.txt
+web-app-with-cloud-run.png
+
+# Ignore all Terraform state and backup files anywhere
+*.tfstate
+
+*.tfstate.backup
+
+# Ignore lock files anywhere
+*.terraform.lock.hcl
+
+# Ignore variable files and secrets anywhere
+
+**/*.tfvars
+*.tfvars
+*.env
+
+# Ignore JSON files (if generated or not needed)
+*.json
+
+# Ignore keys folder anywhere
+keys/

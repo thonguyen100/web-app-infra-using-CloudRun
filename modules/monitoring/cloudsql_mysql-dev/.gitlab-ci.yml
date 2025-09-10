@@ -1,0 +1,128 @@
+include:
+  - project: 'monitoring/automation/templates'
+    ref: master
+    file: "danger/ci-danger-semantic.yml"
+  - project: 'monitoring/automation/templates'
+    ref: master
+    file: "terraform/terradeploy-ci.yml"
+  - project: 'monitoring/automation/templates'
+    ref: master
+    file: "terraform/terradoc-ci.yml"
+  - project: 'monitoring/automation/templates'
+    ref: master
+    file: 'versioning/release-ci.yml'
+  - project: 'monitoring/automation/templates'
+    ref: master
+    file: 'notification/notify-ci.yml'
+  - project: 'monitoring/automation/templates'
+    ref: master
+    file: 'datadog/check-template-ci.yml'
+
+stages:
+  - test
+  - checker
+  - validate
+  - plan
+  - apply
+  - destroy
+  - release
+  - documentation
+  - notify
+
+name: Terraform CI
+
+on:
+push:
+branches:
+- main
+pull_request:
+
+jobs:
+test:
+runs-on: ubuntu-latest
+steps:
+- name: Checkout
+uses: actions/checkout@v3
+# Placeholder for Danger / Semantic check
+- name: Run Danger semantic checks
+run: echo "Danger checks go here"
+
+checker:
+runs-on: ubuntu-latest
+needs: test
+steps:
+- name: Checkout
+uses: actions/checkout@v3
+# Placeholder for template-based check
+- name: Run custom checker
+run: echo "Checker step"
+
+validate:
+runs-on: ubuntu-latest
+needs: checker
+steps:
+- name: Checkout
+uses: actions/checkout@v3
+- name: Terraform Init
+run: terraform init
+- name: Terraform Validate
+run: terraform validate
+
+plan:
+runs-on: ubuntu-latest
+needs: validate
+steps:
+- name: Checkout
+uses: actions/checkout@v3
+- name: Terraform Plan
+run: terraform plan
+
+apply:
+runs-on: ubuntu-latest
+needs: plan
+if: github.ref == 'refs/heads/main'
+steps:
+- name: Checkout
+uses: actions/checkout@v3
+- name: Terraform Apply
+run: terraform apply -auto-approve
+
+destroy:
+runs-on: ubuntu-latest
+needs: apply
+if: github.event.inputs.destroy == 'true'
+steps:
+- name: Checkout
+uses: actions/checkout@v3
+- name: Terraform Destroy
+run: terraform destroy -auto-approve
+
+release:
+runs-on: ubuntu-latest
+needs: apply
+steps:
+- name: Checkout
+uses: actions/checkout@v3
+# Placeholder for release logic
+- name: Release step
+run: echo "Release step here"
+
+documentation:
+runs-on: ubuntu-latest
+needs: apply
+steps:
+- name: Checkout
+uses: actions/checkout@v3
+# Placeholder for terraform-docs
+- name: Generate terraform docs
+run: echo "Docs generation"
+
+notify:
+runs-on: ubuntu-latest
+needs: [release, documentation]
+steps:
+- name: Checkout
+uses: actions/checkout@v3
+# Placeholder for notification (e.g., Slack or Datadog)
+- name: Send Notification
+run: echo "Notifying team..."
