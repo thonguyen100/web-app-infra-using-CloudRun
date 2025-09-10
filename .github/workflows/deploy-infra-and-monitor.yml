@@ -28,6 +28,9 @@ jobs:
         with:
           credentials_json: '${{ secrets.GCP_SA_KEY }}'
 
+      - name: Enable Terraform Debug Logs
+        run: echo "TF_LOG=DEBUG" >> $GITHUB_ENV
+
       - name: Terraform Init
         working-directory: ./envs/stg
         run: terraform init
@@ -39,6 +42,7 @@ jobs:
       - name: Terraform Plan
         working-directory: ./envs/stg
         run: terraform plan  
+        timeout-minutes: 8
 
       - name: Terraform Apply
         working-directory: ./envs/stg
