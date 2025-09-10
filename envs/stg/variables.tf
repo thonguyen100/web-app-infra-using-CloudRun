@@ -41,11 +41,11 @@ variable "cloudflare_zone_id" {
 }
 
 # GITHUB
-variable "github_token" {
-  description = "GitHub token for accessing private repositories"
-  type        = string
-  sensitive   = true
-}
+# variable "github_token" {
+#   description = "GitHub token for accessing private repositories"
+#   type        = string
+#   sensitive   = true
+# }
 variable "repo_name" {
   description = "Name of the GitHub repository"
   type        = string
@@ -55,7 +55,7 @@ variable "github_repo_url" {
   description = "URL of the GitHub repository to clone"
   type        = string
   sensitive   = true
-
+  default = ""
 }
 variable "backend_github_repo" {
   description = "The GitHub repository for the backend application"
@@ -70,42 +70,17 @@ variable "frontend_github_repo" {
 variable "github_token_for_datadog" {
   description = "token for datadog to run CICD"
   sensitive   = true
+  default = ""
 }
 variable "github_repo_for_datadog" {
   description = "url of the github repo containing terraform files"
-}
-
-# Network
-# variable "network_name" {
-#   description = "value of the GCP network name"
-#   type        = string
-# }
-# variable "subnetwork_name" {
-#   description = "value of the GCP subnetwork name"
-#   type        = string
-# }
-# variable "firewall_name" {
-#   description = "value of the GCP firewall name"
-#   type        = string
-# }
-
-# VM
-variable "vm_name" {
-  description = "value of the GCP VM instance name"
-  type        = string
-  sensitive   = true
-}
-variable "startup_script" {
-  description = "value of the startup script file"
-  type        = string
-  sensitive   = true
+  default = ""
 }
 
 variable "domain" {
   description = "The domain name to be managed by Cloudflare"
   type        = string
   sensitive   = false
-
 }
 
 # Database and Secret Manager
@@ -127,6 +102,7 @@ variable "datadog_app_key" {
 variable "customer_id" {
   description = "id of customer"
   type        = string
+  default = "0000"
 }
 variable "asset_name" {
   description = "name of asset being monitored"
@@ -139,4 +115,5 @@ variable "asset_lbnref" {
 variable "customer_name" {
   description = "name of customer"
   type        = string
+  default = "tho-nguyen"
 }

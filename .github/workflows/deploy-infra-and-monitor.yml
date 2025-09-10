@@ -11,8 +11,22 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
+      # Sensitive
       DATADOG_API_KEY: ${{ secrets.DATADOG_API_KEY }}
       DATADOG_APP_KEY: ${{ secrets.DATADOG_APP_KEY }}
+      TF_VAR_cloudflare_token: ${{ secrets.CLOUDFLARE_TOKEN}}
+      TF_VAR_cloudflare_zone_id: ${{ secrets.CLOUDFLARE_ZONE_ID}}
+      TF_VAR_db_user_password_v1: ${{ secrets.DB_USER_PASSWORD_V1}}
+      TF_VAR_credential_file: ${{ secrets.GCP_SA_KEY}}
+      # Non-sensitive
+      TF_VAR_environment: ${{vars.ENVIRONMENT}} 
+      TF_VAR_project_id: ${{vars.PROJECT_ID}}
+      TF_VAR_project_region: ${{vars.PROJECT_REGION}}
+      TF_VAR_project_zone: ${{vars.PROJECT_ZONE}}
+      TF_VAR_backend_github_repo: ${{vars.BACKEND_GITHUB_REPO}}
+      TF_VAR_frontend_github_repo: ${{vars.FRONTEND_GITHUB_REPO}}
+      TF_VAR_domain: ${{vars.DOMAIN}}
+
 
     steps:
       - name: Checkout code
