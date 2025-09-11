@@ -84,28 +84,28 @@ resource "google_cloud_run_v2_service" "back_end" {
 }
 
 # A Cloud Run for testing datadog automation
-resource "google_cloud_run_v2_service" "test_cr" {
-  name     = "${var.environment}-test-cr-by-terraform"
-  location = var.project_region
-  ingress  = "INGRESS_TRAFFIC_ALL"
+# resource "google_cloud_run_v2_service" "test_cr" {
+#   name     = "${var.environment}-test-cr-by-terraform"
+#   location = var.project_region
+#   ingress  = "INGRESS_TRAFFIC_ALL"
 
-  template {
-    scaling {
-      max_instance_count = var.max_instance_count
-    }
-    containers {
-      image = "${var.artifact_registry_image_path_frontend_v1}:latest"
-      resources {
-        limits = {
-          cpu    = "2"
-          memory = "1024Mi"
-        }
-      }
-    }
-  }
-  labels = {
-    monitor_cpu   = "true" # tells Terraform to create a CPU monitor
-    resource_env  = "prod"
-    resource_type = "cloud_run" # tells the monitoring module what this is
-  }
-}
+#   template {
+#     scaling {
+#       max_instance_count = var.max_instance_count
+#     }
+#     containers {
+#       image = "${var.artifact_registry_image_path_frontend_v1}:latest"
+#       resources {
+#         limits = {
+#           cpu    = "2"
+#           memory = "1024Mi"
+#         }
+#       }
+#     }
+#   }
+#   labels = {
+#     monitor_cpu   = "true" # tells Terraform to create a CPU monitor
+#     resource_env  = "prod"
+#     resource_type = "cloud_run" # tells the monitoring module what this is
+#   }
+# }
