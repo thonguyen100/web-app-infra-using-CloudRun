@@ -27,7 +27,7 @@ module "monitoring_backend" {
 }
 
 # Monitoring fo rthe test_cr
-module "monitoring_backend" {
+module "test_monitor" {
   source      = "../../modules/monitoring/cloudrun-dev"
   environment = var.environment
 
