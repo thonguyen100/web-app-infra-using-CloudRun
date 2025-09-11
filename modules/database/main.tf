@@ -1,11 +1,11 @@
 resource "google_sql_database_instance" "app_db_instance" {
-  name                = "${var.environment}-app-db-instance"
-  project             = var.project_id
-  region              = var.project_region
-  database_version    = "MYSQL_8_0_41"
-  deletion_protection = true
-  encryption_key_name = null
-  instance_type       = "CLOUD_SQL_INSTANCE"
+  name                 = "${var.environment}-app-db-instance"
+  project              = var.project_id
+  region               = var.project_region
+  database_version     = "MYSQL_8_0_41"
+  deletion_protection  = true
+  encryption_key_name  = null
+  instance_type        = "CLOUD_SQL_INSTANCE"
   master_instance_name = null
   root_password        = var.db_user_password
   timeouts {
@@ -89,5 +89,5 @@ resource "google_sql_user" "db_user" {
   instance = google_sql_database_instance.app_db_instance.name
   project  = var.project_id
   host     = "%"
-  password = var.db_user_password 
+  password = var.db_user_password
 }

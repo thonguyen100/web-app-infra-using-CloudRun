@@ -41,11 +41,13 @@ variable "cloudflare_zone_id" {
 }
 
 # GITHUB
-# variable "github_token" {
-#   description = "GitHub token for accessing private repositories"
-#   type        = string
-#   sensitive   = true
-# }
+variable "github_token" {
+  description = "GitHub token for accessing private repositories"
+  type        = string
+  default     = ""
+  sensitive   = true
+
+}
 variable "repo_name" {
   description = "Name of the GitHub repository"
   type        = string

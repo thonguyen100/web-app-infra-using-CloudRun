@@ -50,6 +50,8 @@ jobs:
       - name: Terraform Init
         working-directory: ./envs/stg
         run: terraform init
+        timeout-minutes: 2
+
       
       - name: Terraform Validate
         working-directory: ./envs/stg
@@ -58,7 +60,7 @@ jobs:
       - name: Terraform Plan
         working-directory: ./envs/stg
         run: terraform plan  
-        timeout-minutes: 8
+        timeout-minutes: 5
 
       - name: Terraform Apply
         working-directory: ./envs/stg
