@@ -25,3 +25,17 @@ module "monitoring_backend" {
   asset_lbnref  = "${var.environment}-cloud-run-backend"
   customer_name = var.customer_name
 }
+
+# Monitoring fo rthe test_cr
+module "monitoring_backend" {
+  source      = "../../modules/monitoring/cloudrun-dev"
+  environment = var.environment
+
+  datadog_api_key = var.datadog_api_key
+  datadog_app_key = var.datadog_app_key
+
+  customer_id   = var.customer_id
+  asset_name    = "${var.environment}-test-cr-by-terraform"
+  asset_lbnref  = "${var.environment}-test-cr"
+  customer_name = var.customer_name
+}
