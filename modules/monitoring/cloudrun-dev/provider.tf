@@ -14,4 +14,3 @@ provider "datadog" {
   api_url = "https://api.ap1.datadoghq.com"
 
 }
-    

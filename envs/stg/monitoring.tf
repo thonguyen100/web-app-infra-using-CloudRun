@@ -1,5 +1,5 @@
 # Monitoring-frontend
-module "monitoring" {
+module "monitoring_frontend" {
   source      = "../../modules/monitoring/cloudrun-dev"
   environment = var.environment
 
@@ -41,15 +41,15 @@ module "monitoring_db" {
 }
 
 # Monitoring for the test_cr
-module "test_monitor" {
-  source      = "../../modules/monitoring/cloudrun-dev"
-  environment = var.environment
+# module "test_monitor" {
+#   source      = "../../modules/monitoring/cloudrun-dev"
+#   environment = var.environment
 
-  datadog_api_key = var.datadog_api_key
-  datadog_app_key = var.datadog_app_key
+#   datadog_api_key = var.datadog_api_key
+#   datadog_app_key = var.datadog_app_key
 
-  customer_id   = var.customer_id
-  asset_name    = "${var.environment}-test-cr-by-terraform"
-  asset_lbnref  = "${var.environment}-test-cr"
-  customer_name = var.customer_name
-}
+#   customer_id   = var.customer_id
+#   asset_name    = "${var.environment}-test-cr-by-terraform"
+#   asset_lbnref  = "${var.environment}-test-cr"
+#   customer_name = var.customer_name
+# }
