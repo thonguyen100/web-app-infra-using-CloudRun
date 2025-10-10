@@ -77,5 +77,20 @@ variable "github_token_for_datadog" {
 }
 variable "github_repo_for_datadog" {
   description = "GitHub repo to trigger"
+}
 
+# Variables for Network module
+variable "vpc_connector_be" {
+  description = "Name of VPC connector for Cloud Run backend and SQL instance."
+  type        = string
+}
+variable "vpc_connector_fe" {
+  description = "Name of VPC connector for Cloud Run frontend."
+  type        = string
+}
+
+# Outputs from IAM module
+variable "backend_cloud_run_email" {
+  description = "The email of the service account for the backend Cloud Run service."
+  type        = string
 }

@@ -1,12 +1,11 @@
 *.backup
 *.terraform
 *.sh
+*.drawio
+*.png
+
 /modules/bigquery
 /modules/compute
-
-diagram-file-infra-with-cloudrun.drawio
-project-workflows.txt
-web-app-with-cloud-run.png
 
 # Ignore all Terraform state and backup files anywhere
 *.tfstate

@@ -65,3 +65,10 @@ variable "db_user_password_v1" {
   type        = string
   sensitive   = true
 }
+
+# Variable from load balancer internal lb
+variable "internal_lb_static_ip" {
+  description = "Internal LB static IP"
+  type        = string
+  sensitive   = true
+}

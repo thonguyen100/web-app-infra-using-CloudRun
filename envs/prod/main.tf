@@ -14,8 +14,8 @@ terraform {
   }
 
   backend "gcs" {
-    bucket = "stg-mysterious-bucket"
-    prefix = "stg/remote-backend"
+    bucket = "prod-mysterious-bucket"
+    prefix = "prod/remote-backend"
   }
 }
 # Configure the Datadog provider
@@ -51,6 +51,8 @@ resource "google_project_service" "all_apis" {
       "artifactregistry.googleapis.com",
       "storage.googleapis.com",
       "compute.googleapis.com",
+      "vpcaccess.googleapis.com",
+      "iap.googleapis.com",
     ]
   )
   service            = each.key
@@ -67,12 +69,14 @@ module "artifact_registry" {
 
 # IAM
 module "iam" {
-  source               = "../../modules/iam"
-  project_id           = var.project_id
-  project_region       = var.project_region
-  environment          = var.environment
-  backend_github_repo  = var.backend_github_repo
-  frontend_github_repo = var.frontend_github_repo
+  source                            = "../../modules/iam"
+  project_id                        = var.project_id
+  project_region                    = var.project_region
+  environment                       = var.environment
+  backend_github_repo               = var.backend_github_repo
+  frontend_github_repo              = var.frontend_github_repo
+  cloud_run_backend_service_name_v1 = module.cloud_run.cloud_run_backend_service_name_v1
+
 }
 
 # Cloud Run
@@ -86,11 +90,14 @@ module "cloud_run" {
   # Inject variables from root
   domain = var.domain
 
+  # Inject outputs from Network
+  vpc_connector_be = module.network.vpc_connector_be
+  vpc_connector_fe = module.network.vpc_connector_fe
+
   # Inject outputs from DB
   db_instance_connection_name = module.database.db_instance_connection_name
   app_database_name           = module.database.app_database_name
   db_user_name                = module.database.db_user_name
-
 
   # Inject outputs from Secret Manager
   db_user_password    = module.secret_manager.db_user_password
@@ -99,6 +106,9 @@ module "cloud_run" {
   # Inject outputs from Artifact Registry
   artifact_registry_image_path_backend_v1  = module.artifact_registry.artifact_registry_image_path_backend_v1
   artifact_registry_image_path_frontend_v1 = module.artifact_registry.artifact_registry_image_path_frontend_v1
+
+  # Inject outputs from IAM
+  backend_cloud_run_email = module.iam.backend_cloud_run_email
 
   # Inject variables for webhook handler
   github_token_for_datadog = var.github_token_for_datadog
@@ -124,6 +134,9 @@ module "secret_manager" {
   project_region      = var.project_region
   environment         = var.environment
   db_user_password_v1 = var.db_user_password_v1
+
+  ## Inject outputs from load_balancer/internal_lb
+  internal_lb_static_ip = module.load_balancer.internal_lb_static_ip
 
   ## Inject outputs from Artifact Registry
   # Backend
@@ -160,31 +173,36 @@ module "network" {
 }
 
 # DNS
-# module "dns_record" {
-#   source             = "../../modules/dns_record"
-#   cloudflare_token   = var.cloudflare_token
-#   cloudflare_zone_id = var.cloudflare_zone_id
-#   environment        = var.environment
-#   domain             = var.domain
+module "dns_record" {
+  source             = "../../modules/dns_record"
+  cloudflare_token   = var.cloudflare_token
+  cloudflare_zone_id = var.cloudflare_zone_id
+  environment        = var.environment
+  domain             = var.domain
 
-#   # Inject outputs from Load Balancer
-#   lb_static_ip               = module.load_balancer.lb_static_ip
-#   lb_static_ip_resource_name = module.load_balancer.lb_static_ip_resource_name
+  # Inject outputs from Load Balancer
+  lb_static_ip               = module.load_balancer.lb_static_ip
+  lb_static_ip_resource_name = module.load_balancer.lb_static_ip_resource_name
 
-#   # Inject outputs from Cloud Run
-#   cloud_run_frontend_service_url_v1 = module.cloud_run.cloud_run_frontend_service_url_v1
-# }
+  # Inject outputs from Cloud Run
+  cloud_run_frontend_service_url_v1 = module.cloud_run.cloud_run_frontend_service_url_v1
+}
 
 # Load Balancer
-# module "load_balancer" {
-#   source         = "../../modules/load_balancer"
-#   project_region = var.project_region
-#   environment    = var.environment
-#   domain         = var.domain
+module "load_balancer" {
+  source         = "../../modules/load_balancer"
+  project_region = var.project_region
+  environment    = var.environment
+  domain         = var.domain
 
-#   # Inject outputs from Cloud Run
-#   cloud_run_frontend_service_name_v1 = module.cloud_run.cloud_run_frontend_service_name_v1
-# }
+  # Inject outputs from Cloud Run
+  cloud_run_frontend_service_name_v1 = module.cloud_run.cloud_run_frontend_service_name_v1
+  cloud_run_backend_service_name_v1  = module.cloud_run.cloud_run_backend_service_name_v1
+
+  # Inject outputs from Network
+  web_app_vpc_name = module.network.web_app_vpc_name
+  subnet_be_name   = module.network.subnet_be_name
+}
 
 
 

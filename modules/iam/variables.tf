@@ -12,6 +12,7 @@ variable "project_region" {
 
 }
 
+# Vars for Github Repos
 variable "backend_github_repo" {
   description = "Backend GitHub repo = your-username/your-repo"
   type        = string
@@ -19,5 +20,10 @@ variable "backend_github_repo" {
 variable "frontend_github_repo" {
   description = "Frontend GitHub repo = your-username/your-repo"
   type        = string
+}
 
+# Outputs from CR Module 
+variable "cloud_run_backend_service_name_v1" {
+  description = "The name of the backend Cloud Run service (v1)."
+  type        = string
 }

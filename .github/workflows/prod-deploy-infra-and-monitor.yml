@@ -3,7 +3,7 @@ name: Deploy Infra and Datadog Monitor
 on:
   push:
     branches:
-      - stg
+      - prod
 
 jobs:
   terraform:
@@ -48,20 +48,20 @@ jobs:
       #   run: echo "TF_LOG=DEBUG" >> $GITHUB_ENV
 
       - name: Terraform Init
-        working-directory: ./envs/stg
+        working-directory: ./envs/prod
         run: terraform init
         timeout-minutes: 2
 
       
       - name: Terraform Validate
-        working-directory: ./envs/stg
+        working-directory: ./envs/prod
         run: terraform validate
 
       - name: Terraform Plan
-        working-directory: ./envs/stg
+        working-directory: ./envs/prod
         run: terraform plan  
         timeout-minutes: 5
 
       - name: Terraform Apply
-        working-directory: ./envs/stg
+        working-directory: ./envs/prod
         run: terraform apply -auto-approve

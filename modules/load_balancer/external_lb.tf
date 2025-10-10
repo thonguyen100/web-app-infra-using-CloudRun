@@ -37,9 +37,22 @@ resource "google_compute_url_map" "lb_url_map" {
   name            = "${var.environment}-lb-url-map"
   default_service = google_compute_backend_service.lb_traffic_config.id
 
-  depends_on = [google_compute_backend_service.lb_traffic_config]
+  host_rule {
+    hosts        = [var.domain]
+    path_matcher = "allpaths"
+  }
+  path_matcher {
+    name            = "allpaths"
+    default_service = google_compute_backend_service.lb_traffic_config.id
 
+    path_rule {
+      paths   = ["/api/*"]
+      service = google_compute_backend_service.lb_api_backend_service.id
+    }
+  }
+  depends_on = [google_compute_backend_service.lb_traffic_config]
 }
+
 ## This is the config of LB that receives requests from url_map and defines where and how to send traffic
 resource "google_compute_backend_service" "lb_traffic_config" {
   name                  = "${var.environment}-lb-traffic-config"
@@ -47,12 +60,11 @@ resource "google_compute_backend_service" "lb_traffic_config" {
   timeout_sec           = 30
   load_balancing_scheme = "EXTERNAL"
 
-  # health_checks = [google_compute_region_health_check.lb_health_check.id]
-
   backend {
     group = google_compute_region_network_endpoint_group.connection_of_lb_to_frontend.id
   }
 }
+
 ## This is the connection between LB and the frontend Cloud Run
 resource "google_compute_region_network_endpoint_group" "connection_of_lb_to_frontend" {
   name                  = "${var.environment}-connection-of-lb-to-frontend"
@@ -64,12 +76,3 @@ resource "google_compute_region_network_endpoint_group" "connection_of_lb_to_fro
   }
 }
 
-## Add health check to LB
-# resource "google_compute_region_health_check" "lb_health_check" {
-#   region = var.project_region
-#   name   = "${var.environment}-lb-health-check"
-
-#   http_health_check {
-#     port = 8080
-#   }
-# }

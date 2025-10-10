@@ -51,7 +51,7 @@ resource "google_sql_database_instance" "app_db_instance" {
     ip_configuration {
       allocated_ip_range                            = null
       enable_private_path_for_google_cloud_services = true
-      ipv4_enabled                                  = true
+      ipv4_enabled                                  = false
       private_network                               = "projects/${var.project_id}/global/networks/${var.web_app_vpc_name}"
       server_ca_mode                                = "GOOGLE_MANAGED_INTERNAL_CA"
       ssl_mode                                      = null
